@@ -1,0 +1,13 @@
+This is a summary of a web application.
+
+
+Core purpose: Help people think through their career — not by giving answers, but by prompting honest self-reflection through a structured card-pulling exercise.
+Main goals:
+
+Prompt-driven self-reflection — Users draw cards from 6 categories (Action, Direction, Friction, Identity, Values, Wild Card) and respond to open-ended questions about their work and career path.
+Two modes of engagement — A quick single-card "Quick Pull" for a fast gut-check, and a multi-card "Process Session" for deeper exploration across several prompts.
+Surface patterns, not just answers — After a session, the app runs a local synthesis algorithm (TF-IDF theme extraction + key quote scoring) to reflect back what mattered most in your responses — the recurring words, the standout moment, the through-line.
+Actionable closure — Every path ends with a Keep/Discard step (what's worth holding onto vs. letting go) and an Action commitment — a single concrete next step.
+Private and portable — All data stays local in the browser (no accounts, no servers). Sessions are saved and reviewable, and results can be shared as text or a downloadable image.
+
+The philosophy, pulled directly from the original source material: "This deck is a prompt, not a prescription. Act accordingly."

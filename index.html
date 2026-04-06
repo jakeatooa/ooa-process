@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process &mdash; Out of Architecture</title>
+
+  <meta name="description" content="A system for designing your career. Draw cards, respond honestly, and surface the patterns that matter. From Out of Architecture.">
+  <meta name="author" content="Out of Architecture">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Process &mdash; A system for designing your career">
+  <meta property="og:description" content="Draw cards, respond honestly, and surface the patterns that matter. A prompt, not a prescription.">
+  <meta property="og:image" content="assets/OOA_CG_FrontMatter_.jpg">
+  <meta property="og:site_name" content="Out of Architecture">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Process &mdash; A system for designing your career">
+  <meta name="twitter:description" content="Draw cards, respond honestly, and surface the patterns that matter.">
+  <meta name="twitter:image" content="assets/OOA_CG_FrontMatter_.jpg">
+
+  <link rel="icon" type="image/png" href="assets/OOA_CG_FrontMatter_.jpg">
+  <link rel="apple-touch-icon" href="assets/OOA_CG_FrontMatter_.jpg">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">Process<span>.</span></div>
+    <div class="tagline">A system for designing your career &mdash; Out of Architecture</div>
+  </header>
+
+  <nav aria-label="Main navigation">
+    <button class="nav-home active" aria-label="Go to home">Home</button>
+    <button class="nav-history" aria-label="View past sessions">Past Sessions</button>
+  </nav>
+
+  <main>
+
+  <!-- ── HOME ── -->
+  <div id="home-screen" class="screen active">
+    <div class="philosophy">
+      <strong>This deck is a prompt, not a prescription.</strong><br><br>
+      There are no right answers.<br>
+      Some questions stay. Some don&rsquo;t.<br>
+      Notice what lingers. Let go of what doesn&rsquo;t.<br><br>
+      <strong>Act accordingly.</strong>
+    </div>
+
+    <div class="card-fan" aria-hidden="true">
+      <img src="assets/OOA_CG_Action__back.png" alt="" class="fan-card">
+      <img src="assets/OOA_CG_Direction__back.png" alt="" class="fan-card">
+      <img src="assets/OOA_CG_Friction__back.png" alt="" class="fan-card">
+      <img src="assets/OOA_CG_Identity__back.png" alt="" class="fan-card">
+      <img src="assets/OOA_CG_Values__back.png" alt="" class="fan-card">
+    </div>
+
+    <div class="mode-buttons">
+      <button class="mode-btn" id="start-quick" aria-label="Start Quick Pull: one card">
+        <h3>Quick Pull</h3>
+        <div class="mode-desc">One card. One gut-check.<br>A fast moment of honesty.</div>
+      </button>
+      <button class="mode-btn" id="start-process" aria-label="Start Process Session: six cards">
+        <h3>Process Session</h3>
+        <div class="mode-desc">Six cards, one from each category.<br>Deeper reflection, patterns surfaced.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── CARD ── -->
+  <div id="card-screen" class="screen">
+    <div class="session-header">
+      <h2>Quick Pull</h2>
+      <div class="progress-dots" aria-hidden="true"></div>
+    </div>
+
+    <div class="category-pill">Action</div>
+    <div style="text-align:center; margin-bottom: 16px;"></div>
+
+    <div class="card-container card-appear" role="button" tabindex="0" aria-label="Flip the card">
+      <div class="card">
+        <div class="card-face card-front">
+          <img src="" alt="" aria-hidden="true">
+        </div>
+        <div class="card-face card-back">
+          <img src="" alt="" aria-hidden="true">
+        </div>
+      </div>
+    </div>
+
+    <div class="card-hint">Click the card to flip it</div>
+
+    <div class="response-area">
+      <label for="response-textarea">Respond honestly. Write what comes first.</label>
+      <textarea id="response-textarea" placeholder="Start writing... (Ctrl+Enter to submit)"></textarea>
+      <div class="card-actions">
+        <button class="btn" id="btn-skip">Skip</button>
+        <button class="btn primary" id="btn-submit">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ACTION STEP ── -->
+  <div id="action-screen" class="screen">
+    <h2>One Last Thing</h2>
+    <p class="subtitle">Before we surface your patterns&hellip;</p>
+
+    <div class="action-commitment">
+      <h3><label for="action-input">Name one concrete action you&rsquo;ll take.</label></h3>
+      <input type="text" id="action-input" placeholder="I will...">
+    </div>
+
+    <div style="text-align:center; margin-top: 32px;">
+      <button class="btn primary" id="btn-finish-action">See My Synthesis</button>
+    </div>
+  </div>
+
+  <!-- ── SYNTHESIS ── -->
+  <div id="synthesis-screen" class="screen">
+    <div class="synthesis-header">
+      <h2>Your Synthesis</h2>
+      <p class="through-line"></p>
+    </div>
+
+    <div class="themes-section">
+      <h3>Recurring Themes</h3>
+      <div class="themes-list"></div>
+    </div>
+
+    <div class="key-quote-section">
+      <div class="label">Standout Moment</div>
+      <blockquote></blockquote>
+      <div class="source"></div>
+    </div>
+
+    <div class="closure-summary"></div>
+
+    <div class="share-actions">
+      <button class="btn" id="share-text-btn">Copy as Text</button>
+      <button class="btn" id="download-img-btn">Download Image</button>
+      <button class="btn primary" id="btn-new-session">New Session</button>
+    </div>
+  </div>
+
+  <!-- ── HISTORY ── -->
+  <div id="history-screen" class="screen">
+    <h2>Past Sessions</h2>
+    <ul class="session-list"></ul>
+    <div style="text-align:center; margin-top: 32px;">
+      <button class="btn" onclick="showScreen('home')">Back to Home</button>
+    </div>
+  </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>A project by</span>
+      <a href="https://www.outofarchitecture.com" target="_blank" rel="noopener">Out of Architecture</a>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span class="priv">Your responses stay on your device. No accounts. No servers.</span>
+    </div>
+  </footer>
+
+  <script src="cards.js"></script>
+  <script src="synthesis.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
