@@ -158,7 +158,7 @@ nav button.active {
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-align: left;
+  text-align: center;
 }
 
 .mode-btn:hover {
@@ -654,6 +654,114 @@ nav button.active {
   font-size: 15px;
   line-height: 1.6;
   color: var(--gray-600);
+}
+
+/* ── Responses Dropdown ── */
+.responses-dropdown {
+  margin-bottom: 40px;
+  border: 1px solid var(--gray-100);
+}
+
+.responses-dropdown summary {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.2s;
+}
+
+.responses-dropdown summary::-webkit-details-marker { display: none; }
+
+.responses-dropdown summary::after {
+  content: "\25BC";
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+
+.responses-dropdown[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.responses-dropdown summary:hover { color: var(--black); }
+
+.responses-list {
+  padding: 0 20px 20px;
+}
+
+.response-item {
+  padding: 16px 0;
+  border-top: 1px solid var(--gray-100);
+}
+
+.response-item .response-category {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 4px;
+}
+
+.response-item .response-prompt {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+}
+
+.response-item .response-text {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--black);
+}
+
+/* ── Collective CTA ── */
+.collective-cta {
+  background: var(--black);
+  padding: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.collective-cta-inner {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.collective-logo {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.collective-cta p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--white);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.collective-btn {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.collective-btn:hover {
+  background: var(--white);
+  color: var(--black);
 }
 
 .share-actions {

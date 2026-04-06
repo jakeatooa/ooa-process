@@ -428,6 +428,18 @@ function renderSynthesis(result) {
     quoteSection.style.display = "none";
   }
 
+  // Responses dropdown
+  const responsesList = $(".responses-list");
+  if (responsesList) {
+    responsesList.innerHTML = state.responses.map(r => `
+      <div class="response-item">
+        <div class="response-category">${escapeHtml(r.categoryName)}${r.kept === true ? " \u2022 Kept" : r.kept === false ? " \u2022 Discarded" : ""}</div>
+        <div class="response-prompt">${escapeHtml(r.prompt)}</div>
+        <div class="response-text">${escapeHtml(r.response)}</div>
+      </div>
+    `).join("");
+  }
+
   // Action commitment
   const closureSummary = $(".closure-summary");
   closureSummary.innerHTML = "<h3>Your Commitment</h3>";
@@ -616,6 +628,10 @@ function downloadAsImage() {
       ctx.fillStyle = "#f5f2ed";
       ctx.font = "italic 400 32px 'Georgia', serif";
       ctx.fillText("Process.", padding, 52);
+      // OOA branding on right side of header
+      ctx.font = "italic 400 14px 'Georgia', serif";
+      ctx.fillStyle = "#8a857d";
+      ctx.fillText("Out of Architecture", W - padding - ctx.measureText("Out of Architecture").width, 52);
 
       // Card thumbnails (2x size)
       if (thumbH > 0) {
