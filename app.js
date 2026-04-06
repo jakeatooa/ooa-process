@@ -428,27 +428,29 @@ function renderSynthesis(result) {
     quoteSection.style.display = "none";
   }
 
-  // Responses dropdown
+  // Responses dropdown (includes commitment)
   const responsesList = $(".responses-list");
   if (responsesList) {
-    responsesList.innerHTML = state.responses.map(r => `
+    let responsesHtml = state.responses.map(r => `
       <div class="response-item">
         <div class="response-category">${escapeHtml(r.categoryName)}${r.kept === true ? " \u2022 Kept" : r.kept === false ? " \u2022 Discarded" : ""}</div>
         <div class="response-prompt">${escapeHtml(r.prompt)}</div>
         <div class="response-text">${escapeHtml(r.response)}</div>
       </div>
     `).join("");
+    responsesList.innerHTML = responsesHtml;
   }
 
-  // Action commitment
+  // Action commitment (inside the dropdown)
   const closureSummary = $(".closure-summary");
-  closureSummary.innerHTML = "<h3>Your Commitment</h3>";
   if (state.closure.action) {
-    closureSummary.innerHTML += `
-      <div class="closure-item"><div class="closure-label">Next Action</div><p>${escapeHtml(state.closure.action)}</p></div>
+    closureSummary.innerHTML = `
+      <div class="closure-item" style="border-top: 1px solid var(--gray-100); margin-top: 8px;">
+        <div class="closure-label">Your Commitment</div><p>${escapeHtml(state.closure.action)}</p>
+      </div>
     `;
   } else {
-    closureSummary.innerHTML += `<div class="closure-item"><p style="font-style:italic; color: var(--gray-400);">No action recorded this session.</p></div>`;
+    closureSummary.innerHTML = "";
   }
 }
 

@@ -114,31 +114,23 @@ nav button.active {
   font-weight: 600;
 }
 
-/* ── Card Fan (advertised deck style) ── */
-.card-fan {
-  position: relative;
-  width: 360px;
-  height: 220px;
+/* ── Deck Hero Image ── */
+.deck-hero {
   margin: 0 auto 32px;
+  text-align: center;
+  background: #dfdcd7;
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 0;
 }
 
-.fan-card {
-  position: absolute;
-  width: 110px;
-  height: 154px;
-  object-fit: cover;
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
-  bottom: 0;
-  left: 50%;
-  transform-origin: 15% 95%;
+.deck-hero-img {
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
-
-.fan-card:nth-child(1) { transform: translate(-120px, 0) rotate(-4deg);  z-index: 1; }
-.fan-card:nth-child(2) { transform: translate(-100px, 0) rotate(5deg);   z-index: 2; }
-.fan-card:nth-child(3) { transform: translate(-70px, 0)  rotate(14deg);  z-index: 3; }
-.fan-card:nth-child(4) { transform: translate(-30px, 0)  rotate(23deg);  z-index: 4; }
-.fan-card:nth-child(5) { transform: translate(10px, 0)   rotate(32deg);  z-index: 5; }
 
 /* ── Mode Buttons ── */
 .mode-buttons {
@@ -735,7 +727,7 @@ nav button.active {
 }
 
 .collective-cta-inner {
-  max-width: 400px;
+  max-width: 540px;
   margin: 0 auto;
 }
 
@@ -993,13 +985,9 @@ nav button.active {
   .key-quote-section blockquote { font-size: 18px; }
   .quick-result-quote { padding: 24px; }
   .quick-result-quote blockquote { font-size: 18px; }
-  .card-fan { width: 280px; height: 180px; margin-bottom: 32px; }
-  .fan-card { width: 85px; height: 119px; }
-  .fan-card:nth-child(1) { transform: translate(-95px, 0) rotate(-4deg); }
-  .fan-card:nth-child(2) { transform: translate(-78px, 0) rotate(5deg); }
-  .fan-card:nth-child(3) { transform: translate(-55px, 0) rotate(14deg); }
-  .fan-card:nth-child(4) { transform: translate(-25px, 0) rotate(23deg); }
-  .fan-card:nth-child(5) { transform: translate(5px, 0)   rotate(32deg); }
+  .deck-hero { margin-left: -20px; margin-right: -20px; }
+  .collective-cta { padding: 28px 20px; }
+  .collective-cta p { font-size: 16px; }
   .response-area { max-width: 100%; }
   .response-area textarea { min-height: 120px; }
   .through-line { font-size: 16px; }
@@ -1022,13 +1010,7 @@ nav button.active {
   header .logo { font-size: 24px; }
   #home-screen, #action-screen, #quick-result-screen,
   #synthesis-screen, #history-screen { padding: 32px 16px; }
-  .card-fan { width: 240px; height: 160px; }
-  .fan-card { width: 72px; height: 100px; }
-  .fan-card:nth-child(1) { transform: translate(-80px, 0) rotate(-4deg); }
-  .fan-card:nth-child(2) { transform: translate(-65px, 0) rotate(5deg); }
-  .fan-card:nth-child(3) { transform: translate(-45px, 0) rotate(14deg); }
-  .fan-card:nth-child(4) { transform: translate(-20px, 0) rotate(23deg); }
-  .fan-card:nth-child(5) { transform: translate(5px, 0)   rotate(32deg); }
+  .deck-hero { margin-left: -16px; margin-right: -16px; }
 }
 
 /* ── Animations ── */
