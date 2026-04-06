@@ -575,8 +575,8 @@ function downloadAsImage() {
       const ctx = canvas.getContext("2d");
       const W = 800;
       const padding = 60;
-      const headerH = 70;
-      const thumbH = images.some(i => i) ? 90 : 0;
+      const headerH = 80;
+      const thumbH = images.some(i => i) ? 140 : 0;
 
       // Build text lines
       let lines = [];
@@ -610,20 +610,20 @@ function downloadAsImage() {
       canvas.width = W;
       canvas.height = totalHeight;
 
-      // Black header band
-      ctx.fillStyle = "#0a0a0a";
+      // Black header band (true black)
+      ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, W, headerH);
       ctx.fillStyle = "#f5f2ed";
-      ctx.font = "italic 400 28px 'Georgia', serif";
-      ctx.fillText("Process.", padding, 46);
+      ctx.font = "italic 400 32px 'Georgia', serif";
+      ctx.fillText("Process.", padding, 52);
 
-      // Card thumbnails
+      // Card thumbnails (2x size)
       if (thumbH > 0) {
-        ctx.fillStyle = "#0a0a0a";
+        ctx.fillStyle = "#000000";
         ctx.fillRect(0, headerH, W, thumbH);
-        const thumbW = 40;
-        const thumbHt = 56;
-        const gap = 24;
+        const thumbW = 70;
+        const thumbHt = 98;
+        const gap = 20;
         const validImages = images.filter(i => i);
         const totalThumbW = validImages.length * thumbW + (validImages.length - 1) * gap;
         let thumbX = (W - totalThumbW) / 2;
@@ -632,16 +632,17 @@ function downloadAsImage() {
             ctx.save();
             ctx.beginPath();
             const r = 3;
-            ctx.roundRect(thumbX, headerH + 10, thumbW, thumbHt, r);
+            const thumbY = headerH + 12;
+            ctx.roundRect(thumbX, thumbY, thumbW, thumbHt, r);
             ctx.clip();
-            ctx.drawImage(img, thumbX, headerH + 10, thumbW, thumbHt);
+            ctx.drawImage(img, thumbX, thumbY, thumbW, thumbHt);
             ctx.restore();
             // Category name below
             ctx.fillStyle = "#8a857d";
-            ctx.font = "500 9px Inter, sans-serif";
+            ctx.font = "500 10px Inter, sans-serif";
             const catName = state.drawnCards[i]?.categoryName || "";
             const tw = ctx.measureText(catName).width;
-            ctx.fillText(catName, thumbX + (thumbW - tw) / 2, headerH + 10 + thumbHt + 12);
+            ctx.fillText(catName, thumbX + (thumbW - tw) / 2, thumbY + thumbHt + 14);
             thumbX += thumbW + gap;
           }
         });
