@@ -4,11 +4,13 @@ const state = {
   currentScreen: "home",
   currentCardIndex: 0,
   totalCards: 1,
-  categoryOrder: [], // shuffled category keys for process mode
+  categoryOrder: [],
   drawnCards: [],
   responses: [],
   closure: { action: "" },
   isFlipped: false,
+  activeWidget: null,
+  widgetData: null,
 };
 
 // ── DOM helpers ──
@@ -21,7 +23,6 @@ function showScreen(name) {
   $(`#${name}-screen`).classList.add("active");
   state.currentScreen = name;
 
-  // Update nav
   $$("nav button").forEach((b) => b.classList.remove("active"));
   const navMap = { home: "nav-home", history: "nav-history" };
   if (navMap[name]) $(`.${navMap[name]}`)?.classList.add("active");
@@ -36,6 +37,8 @@ function startSession(mode) {
   state.drawnCards = [];
   state.responses = [];
   state.closure = { action: "" };
+  state.activeWidget = null;
+  state.widgetData = null;
 
   drawNextCard();
   showScreen("card");
@@ -52,6 +55,8 @@ function drawNextCard() {
   const card = getSmartRandomCard(catKey);
   state.drawnCards.push(card);
   state.isFlipped = false;
+  state.activeWidget = null;
+  state.widgetData = null;
 
   renderCardScreen();
 }
@@ -60,11 +65,9 @@ function renderCardScreen() {
   const card = state.drawnCards[state.drawnCards.length - 1];
   const cardNum = state.currentCardIndex + 1;
 
-  // Header
   $(".session-header h2").textContent =
     state.mode === "quick" ? "Quick Pull" : `Card ${cardNum} of ${state.totalCards}`;
 
-  // Progress dots
   const dotsContainer = $(".progress-dots");
   dotsContainer.innerHTML = "";
   for (let i = 0; i < state.totalCards; i++) {
@@ -75,25 +78,19 @@ function renderCardScreen() {
     dotsContainer.appendChild(dot);
   }
 
-  // Card images
   const cardEl = $(".card");
   cardEl.classList.remove("flipped");
-  $(".card-front img").src = card.back; // back image = face-down (category art)
-  $(".card-back img").src = card.front; // front image = face-up (prompt)
+  $(".card-front img").src = card.back;
+  $(".card-back img").src = card.front;
 
-  // Reset card animation
   const container = $(".card-container");
   container.classList.remove("card-appear");
   void container.offsetWidth;
   container.classList.add("card-appear");
 
-  // Category pill
   $(".category-pill").textContent = card.categoryName;
-
-  // Hint
   $(".card-hint").textContent = "Click the card to flip it";
 
-  // Restore response area to input mode
   restoreResponseArea();
 }
 
@@ -104,20 +101,181 @@ function flipCard() {
   $(".card").classList.add("flipped");
   $(".card-hint").textContent = "";
 
-  // Show response area after flip
+  const card = state.drawnCards[state.drawnCards.length - 1];
+
   setTimeout(() => {
     $(".response-area").classList.add("visible");
-    const ta = $("#response-textarea");
-    if (ta) ta.focus();
+    // Check for interactive widget
+    if (card.widget) {
+      renderWidget(card.widget);
+    } else {
+      const ta = $("#response-textarea");
+      if (ta) ta.focus();
+    }
   }, 400);
+}
+
+// ── Widgets ──
+
+function renderWidget(type) {
+  state.activeWidget = type;
+  const area = $(".response-area");
+
+  if (type === "quadrant") {
+    renderQuadrantWidget(area);
+  } else if (type === "rank") {
+    renderRankWidget(area);
+  }
+}
+
+function renderQuadrantWidget(area) {
+  area.innerHTML = `
+    <p class="reflection-label">Tap to place yourself on the grid</p>
+    <div class="quadrant-container" id="quadrant-grid">
+      <div class="quadrant-crosshair-h"></div>
+      <div class="quadrant-crosshair-v"></div>
+      <div class="quadrant-label quadrant-label--tl">Confident<br>but Growing</div>
+      <div class="quadrant-label quadrant-label--tr">In Your<br>Element</div>
+      <div class="quadrant-label quadrant-label--bl">Starting<br>Out</div>
+      <div class="quadrant-label quadrant-label--br">Skilled but<br>Doubting</div>
+      <div class="quadrant-axis quadrant-axis--top">High Confidence</div>
+      <div class="quadrant-axis quadrant-axis--bottom">Low Confidence</div>
+      <div class="quadrant-axis quadrant-axis--left">Low Competence</div>
+      <div class="quadrant-axis quadrant-axis--right">High Competence</div>
+      <div class="quadrant-dot" id="quadrant-dot"></div>
+    </div>
+    <div class="card-actions">
+      <button class="btn" id="btn-skip">Skip</button>
+      <button class="btn primary" id="btn-submit">Submit</button>
+    </div>
+  `;
+
+  const grid = $("#quadrant-grid");
+  const dot = $("#quadrant-dot");
+
+  const placePoint = (clientX, clientY) => {
+    const rect = grid.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+    dot.style.left = (x * 100) + "%";
+    dot.style.top = (y * 100) + "%";
+    dot.classList.add("placed");
+
+    const competence = Math.round(x * 100);
+    const confidence = Math.round((1 - y) * 100); // y is inverted
+    const quadrant = confidence >= 50
+      ? (competence >= 50 ? "In Your Element" : "Confident but Growing")
+      : (competence >= 50 ? "Skilled but Doubting" : "Starting Out");
+    state.widgetData = { competence, confidence, quadrant };
+  };
+
+  grid.addEventListener("click", (e) => placePoint(e.clientX, e.clientY));
+  grid.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    const t = e.changedTouches[0];
+    placePoint(t.clientX, t.clientY);
+  }, { passive: false });
+}
+
+function renderRankWidget(area) {
+  const items = ["Learning", "Earning", "Visibility", "Flexibility", "Challenge"];
+  state.widgetData = { order: [...items] };
+
+  area.innerHTML = `
+    <p class="reflection-label">Drag or use arrows to rank your priorities</p>
+    <ul class="rank-list" id="rank-list">
+      ${items.map((item, i) => `
+        <li class="rank-item" draggable="true" data-index="${i}">
+          <span class="rank-number">${i + 1}</span>
+          <span class="rank-text">${item}</span>
+          <div class="rank-arrows">
+            <button class="rank-arrow" data-dir="up" aria-label="Move up">\u25B2</button>
+            <button class="rank-arrow" data-dir="down" aria-label="Move down">\u25BC</button>
+          </div>
+        </li>
+      `).join("")}
+    </ul>
+    <div class="card-actions">
+      <button class="btn" id="btn-skip">Skip</button>
+      <button class="btn primary" id="btn-submit">Submit</button>
+    </div>
+  `;
+
+  const list = $("#rank-list");
+
+  // Arrow button reordering (works on mobile)
+  list.addEventListener("click", (e) => {
+    const arrow = e.target.closest(".rank-arrow");
+    if (!arrow) return;
+    const dir = arrow.dataset.dir;
+    const item = arrow.closest(".rank-item");
+    if (dir === "up" && item.previousElementSibling) {
+      list.insertBefore(item, item.previousElementSibling);
+    } else if (dir === "down" && item.nextElementSibling) {
+      list.insertBefore(item.nextElementSibling, item);
+    }
+    updateRankNumbers();
+  });
+
+  // Desktop drag-and-drop
+  let dragItem = null;
+  list.addEventListener("dragstart", (e) => {
+    dragItem = e.target.closest(".rank-item");
+    if (dragItem) dragItem.classList.add("dragging");
+  });
+  list.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const target = e.target.closest(".rank-item");
+    if (target && target !== dragItem) {
+      const rect = target.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (e.clientY < mid) {
+        list.insertBefore(dragItem, target);
+      } else {
+        list.insertBefore(dragItem, target.nextSibling);
+      }
+    }
+  });
+  list.addEventListener("dragend", () => {
+    if (dragItem) dragItem.classList.remove("dragging");
+    dragItem = null;
+    updateRankNumbers();
+  });
+
+  function updateRankNumbers() {
+    const items = list.querySelectorAll(".rank-item");
+    state.widgetData.order = [];
+    items.forEach((item, i) => {
+      item.querySelector(".rank-number").textContent = i + 1;
+      state.widgetData.order.push(item.querySelector(".rank-text").textContent);
+    });
+  }
+}
+
+function getWidgetValue() {
+  if (!state.activeWidget || !state.widgetData) return "";
+  if (state.activeWidget === "quadrant") {
+    const { competence, confidence, quadrant } = state.widgetData;
+    return `Competence: ${competence}%, Confidence: ${confidence}% \u2014 "${quadrant}"`;
+  }
+  if (state.activeWidget === "rank") {
+    return state.widgetData.order.map((item, i) => `${i + 1}. ${item}`).join(", ");
+  }
+  return "";
 }
 
 // ── Submit response ──
 function submitResponse() {
-  const textarea = $("#response-textarea");
-  if (!textarea) return;
-  const text = textarea.value.trim();
   const card = state.drawnCards[state.drawnCards.length - 1];
+  let text = "";
+
+  if (state.activeWidget) {
+    text = getWidgetValue();
+  } else {
+    const textarea = $("#response-textarea");
+    if (!textarea) return;
+    text = textarea.value.trim();
+  }
 
   if (text) {
     state.responses.push({
@@ -125,7 +283,7 @@ function submitResponse() {
       response: text,
       category: card.category,
       categoryName: card.categoryName,
-      kept: null, // set by keep/discard step
+      kept: null,
     });
     showReflectionStep(text);
   } else {
@@ -164,6 +322,8 @@ function decidCard(kept) {
 function restoreResponseArea() {
   const area = $(".response-area");
   area.classList.remove("visible");
+  state.activeWidget = null;
+  state.widgetData = null;
   area.innerHTML = `
     <label for="response-textarea">Respond honestly. Write what comes first.</label>
     <textarea id="response-textarea" placeholder="Start writing... (Ctrl+Enter to submit)"></textarea>
@@ -174,13 +334,17 @@ function restoreResponseArea() {
   `;
 }
 
-// ── Advance to next card or action step ──
+// ── Advance to next card or result ──
 function advanceCard() {
   state.currentCardIndex++;
 
   if (state.currentCardIndex >= state.totalCards) {
     if (state.responses.length > 0) {
-      showScreen("action");
+      if (state.mode === "quick") {
+        showQuickResult();
+      } else {
+        showScreen("action");
+      }
     } else {
       showScreen("home");
     }
@@ -189,13 +353,49 @@ function advanceCard() {
   }
 }
 
-// ── Action step ──
+// ── Quick Result (Quick Pull only) ──
+function showQuickResult() {
+  const r = state.responses[0];
+  const qScreen = $("#quick-result-screen");
+  qScreen.querySelector("blockquote").textContent = `\u201C${r.response}\u201D`;
+  qScreen.querySelector(".source").textContent = `\u2014 ${r.categoryName}`;
+  showScreen("quick-result");
+}
+
+function finishQuickResult() {
+  state.closure.action = $("#quick-action-input").value.trim();
+
+  const session = {
+    id: Date.now(),
+    date: new Date().toISOString(),
+    mode: "quick",
+    responses: state.responses,
+    closure: state.closure,
+    synthesis: {
+      themes: [],
+      throughLine: "",
+      keyQuote: { quote: state.responses[0]?.response || "", category: state.responses[0]?.categoryName || "" },
+    },
+  };
+
+  try {
+    const sessions = JSON.parse(localStorage.getItem("process_sessions") || "[]");
+    sessions.unshift(session);
+    localStorage.setItem("process_sessions", JSON.stringify(sessions));
+  } catch (err) {
+    console.warn("Couldn't save session:", err);
+  }
+
+  showScreen("home");
+}
+
+// ── Action step (Process Session only) ──
 function finishAction() {
   state.closure.action = $("#action-input").value.trim();
   runSynthesis();
 }
 
-// ── Synthesis ──
+// ── Synthesis (Process Session only) ──
 function runSynthesis() {
   const result = synthesize(state.responses);
   renderSynthesis(result);
@@ -207,22 +407,13 @@ function renderSynthesis(result) {
   // Through-line
   $(".through-line").textContent = result.throughLine || "Complete more cards for deeper insights.";
 
-  // Themes
-  const themesContainer = $(".themes-list");
-  themesContainer.innerHTML = "";
-  if (result.themes.length > 0) {
+  // Themes as styled word list
+  const themesContainer = $(".themes-words");
+  if (result.themes && result.themes.length > 0) {
     $(".themes-section").style.display = "block";
-    const maxWeight = Math.max(...result.themes.map((t) => t.weight));
-    result.themes.forEach((theme) => {
-      const bar = document.createElement("div");
-      bar.className = "theme-bar fade-in";
-      const pct = Math.max((theme.weight / maxWeight) * 100, 15);
-      bar.innerHTML = `
-        <span class="theme-label">${theme.theme}</span>
-        <div class="theme-track"><div class="theme-fill" style="width: ${pct}%"></div></div>
-      `;
-      themesContainer.appendChild(bar);
-    });
+    themesContainer.innerHTML = result.themes
+      .map(t => t.theme)
+      .join('<span class="dot-sep">\u00b7</span>');
   } else {
     $(".themes-section").style.display = "none";
   }
@@ -292,9 +483,7 @@ function loadHistory() {
     const item = document.createElement("li");
     item.className = "session-item";
     const date = new Date(session.date);
-    const dateStr = date.toLocaleDateString("en-US", {
-      year: "numeric", month: "long", day: "numeric",
-    });
+    const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     const modeLabel = session.mode === "quick" ? "Quick Pull" : "Process Session";
     const preview = session.synthesis?.throughLine || `${session.responses.length} response(s)`;
 
@@ -353,7 +542,6 @@ function shareAsText() {
       document.body.removeChild(ta);
       flash(ok ? "Copied!" : "Copy failed");
     } catch (err) {
-      console.warn("Clipboard fallback failed:", err);
       flash("Copy failed");
     }
   };
@@ -366,70 +554,125 @@ function shareAsText() {
 }
 
 function downloadAsImage() {
-  try {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  const W = 800;
-  const padding = 60;
+  const btn = $("#download-img-btn");
+  const original = btn.textContent;
+  btn.textContent = "Generating...";
 
-  let lines = [];
-  lines.push({ text: "Process", size: 32, bold: true, space: 20 });
-  lines.push({ text: "A system for designing your career.", size: 14, italic: true, space: 30 });
-
-  state.responses.forEach((r) => {
-    const tag = r.kept === true ? " [Kept]" : r.kept === false ? " [Discarded]" : "";
-    lines.push({ text: `[${r.categoryName}]${tag}`, size: 11, bold: true, space: 6 });
-    lines.push({ text: r.prompt, size: 14, italic: true, space: 8 });
-    const words = r.response.split(" ");
-    let line = "";
-    words.forEach((w) => {
-      const test = line ? line + " " + w : w;
-      if (test.length > 70) {
-        lines.push({ text: line, size: 14, space: 4 });
-        line = w;
-      } else {
-        line = test;
-      }
+  // Load card-back images for thumbnails
+  const cardImages = state.drawnCards.map(card => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = card.back;
+    return new Promise((resolve) => {
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
     });
-    if (line) lines.push({ text: line, size: 14, space: 20 });
   });
 
-  if (state.closure.action) {
-    lines.push({ text: "Next Action:", size: 12, bold: true, space: 6 });
-    lines.push({ text: state.closure.action, size: 14, space: 12 });
-  }
+  Promise.all(cardImages).then((images) => {
+    try {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const W = 800;
+      const padding = 60;
+      const headerH = 70;
+      const thumbH = images.some(i => i) ? 90 : 0;
 
-  lines.push({ text: "", size: 14, space: 20 });
-  lines.push({ text: "\u2014 Out of Architecture", size: 12, italic: true, space: 0 });
+      // Build text lines
+      let lines = [];
+      state.responses.forEach((r) => {
+        lines.push({ text: `[${r.categoryName}]`, size: 12, bold: true, space: 6 });
+        lines.push({ text: r.prompt, size: 14, italic: true, space: 8 });
+        const words = r.response.split(" ");
+        let line = "";
+        words.forEach((w) => {
+          const test = line ? line + " " + w : w;
+          if (test.length > 70) {
+            lines.push({ text: line, size: 14, space: 4 });
+            line = w;
+          } else {
+            line = test;
+          }
+        });
+        if (line) lines.push({ text: line, size: 14, space: 20 });
+      });
 
-  const totalHeight = lines.reduce((h, l) => h + l.size + (l.space || 0), 0) + padding * 2;
-  canvas.width = W;
-  canvas.height = totalHeight;
+      if (state.closure.action) {
+        lines.push({ text: "Next Action:", size: 12, bold: true, space: 6 });
+        lines.push({ text: state.closure.action, size: 14, space: 12 });
+      }
 
-  ctx.fillStyle = "#faf8f4";
-  ctx.fillRect(0, 0, W, totalHeight);
+      lines.push({ text: "", size: 14, space: 20 });
+      lines.push({ text: "\u2014 Out of Architecture", size: 12, italic: true, space: 0 });
 
-  let y = padding;
-  lines.forEach((l) => {
-    const weight = l.bold ? "bold" : "normal";
-    const style = l.italic ? "italic" : "normal";
-    ctx.font = `${style} ${weight} ${l.size}px Inter, sans-serif`;
-    ctx.fillStyle = "#0a0a0a";
-    ctx.fillText(l.text, padding, y + l.size);
-    y += l.size + (l.space || 0);
+      const textHeight = lines.reduce((h, l) => h + l.size + (l.space || 0), 0);
+      const totalHeight = headerH + thumbH + textHeight + padding * 2;
+      canvas.width = W;
+      canvas.height = totalHeight;
+
+      // Black header band
+      ctx.fillStyle = "#0a0a0a";
+      ctx.fillRect(0, 0, W, headerH);
+      ctx.fillStyle = "#f5f2ed";
+      ctx.font = "italic 400 28px 'Georgia', serif";
+      ctx.fillText("Process.", padding, 46);
+
+      // Card thumbnails
+      if (thumbH > 0) {
+        ctx.fillStyle = "#0a0a0a";
+        ctx.fillRect(0, headerH, W, thumbH);
+        const thumbW = 40;
+        const thumbHt = 56;
+        const gap = 24;
+        const validImages = images.filter(i => i);
+        const totalThumbW = validImages.length * thumbW + (validImages.length - 1) * gap;
+        let thumbX = (W - totalThumbW) / 2;
+        validImages.forEach((img, i) => {
+          if (img) {
+            ctx.save();
+            ctx.beginPath();
+            const r = 3;
+            ctx.roundRect(thumbX, headerH + 10, thumbW, thumbHt, r);
+            ctx.clip();
+            ctx.drawImage(img, thumbX, headerH + 10, thumbW, thumbHt);
+            ctx.restore();
+            // Category name below
+            ctx.fillStyle = "#8a857d";
+            ctx.font = "500 9px Inter, sans-serif";
+            const catName = state.drawnCards[i]?.categoryName || "";
+            const tw = ctx.measureText(catName).width;
+            ctx.fillText(catName, thumbX + (thumbW - tw) / 2, headerH + 10 + thumbHt + 12);
+            thumbX += thumbW + gap;
+          }
+        });
+      }
+
+      // Cream body
+      const bodyY = headerH + thumbH;
+      ctx.fillStyle = "#faf8f4";
+      ctx.fillRect(0, bodyY, W, totalHeight - bodyY);
+
+      let y = bodyY + padding;
+      lines.forEach((l) => {
+        const weight = l.bold ? "bold" : "normal";
+        const style = l.italic ? "italic" : "normal";
+        ctx.font = `${style} ${weight} ${l.size}px Inter, sans-serif`;
+        ctx.fillStyle = "#0a0a0a";
+        ctx.fillText(l.text, padding, y + l.size);
+        y += l.size + (l.space || 0);
+      });
+
+      const link = document.createElement("a");
+      link.download = `process-session-${new Date().toISOString().slice(0, 10)}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      btn.textContent = original;
+    } catch (err) {
+      console.warn("Couldn't generate image:", err);
+      btn.textContent = "Download failed";
+      setTimeout(() => (btn.textContent = original), 2000);
+    }
   });
-
-  const link = document.createElement("a");
-  link.download = `process-session-${new Date().toISOString().slice(0, 10)}.png`;
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-  } catch (err) {
-    console.warn("Couldn't generate image:", err);
-    const btn = $("#download-img-btn");
-    const original = btn.textContent;
-    btn.textContent = "Download failed";
-    setTimeout(() => (btn.textContent = original), 2000);
-  }
 }
 
 // ── Utility ──
@@ -461,7 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Response area — use event delegation so dynamically replaced buttons work
+  // Response area — event delegation for dynamic buttons
   $(".response-area").addEventListener("click", (e) => {
     const id = e.target.id;
     if (id === "btn-submit") submitResponse();
@@ -476,8 +719,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Action step
+  // Action step (Process Session)
   $("#btn-finish-action").addEventListener("click", finishAction);
+
+  // Quick result (Quick Pull)
+  $("#btn-quick-done").addEventListener("click", finishQuickResult);
 
   // Share
   $("#share-text-btn").addEventListener("click", shareAsText);

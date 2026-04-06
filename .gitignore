@@ -10,3 +10,6 @@ desktop.ini
 *.swp
 *.swo
 *~
+
+# Local Netlify folder
+.netlify
