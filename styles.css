@@ -1097,10 +1097,9 @@ a:focus-visible {
 }
 
 .footer-brand {
-  background: var(--cream);
+  background: var(--black);
   padding: 40px 24px;
   text-align: center;
-  border-top: 1px solid var(--gray-100);
 }
 
 .footer-brand .collective-logo {
@@ -1118,8 +1117,8 @@ a:focus-visible {
 }
 
 .footer-brand .btn {
-  border-color: var(--black);
-  color: var(--black);
+  border-color: var(--accent);
+  color: #fff;
   border-radius: 4px;
 }
 
