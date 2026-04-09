@@ -30,7 +30,8 @@ body {
 header {
   text-align: center;
   padding: 48px 24px 32px;
-  border-bottom: 1px solid var(--gray-100);
+  background: var(--black);
+  color: #fff;
 }
 
 header .logo {
@@ -39,11 +40,12 @@ header .logo {
   font-weight: 400;
   letter-spacing: 0.02em;
   margin-bottom: 4px;
+  color: #fff;
 }
 
 header .logo span {
   font-weight: 300;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 header .tagline {
@@ -56,7 +58,7 @@ header .tagline {
 
 header .collective-link {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: 14px;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
@@ -68,7 +70,17 @@ header .collective-link {
 }
 
 header .collective-link:hover {
-  color: var(--accent-dark);
+  color: #fff;
+}
+
+header .collective-link-sub {
+  display: block;
+  margin-top: 4px;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--gray-400);
 }
 
 /* ── Navigation ── */
@@ -1091,9 +1103,9 @@ a:focus-visible {
 }
 
 .footer-brand .collective-logo {
-  max-width: 180px;
+  max-width: 260px;
   height: auto;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .footer-brand p {
