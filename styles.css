@@ -2,9 +2,10 @@
 
 :root {
   --black: #0a0a0a;
-  --white: #f5f2ed;
-  --cream: #faf8f4;
-  --accent: #c8a97e;
+  --white: #faf8f4;
+  --cream: #fefdf6;
+  --accent: #b79968;
+  --accent-dark: #9c8258;
   --gray-100: #e8e5e0;
   --gray-200: #d1cdc6;
   --gray-400: #8a857d;
@@ -53,6 +54,23 @@ header .tagline {
   margin-top: 6px;
 }
 
+header .collective-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.25s ease-out;
+}
+
+header .collective-link:hover {
+  color: var(--accent-dark);
+}
+
 /* ── Navigation ── */
 nav {
   display: flex;
@@ -71,10 +89,11 @@ nav button {
   padding: 14px 20px;
   min-height: 44px;
   border: 1px solid var(--gray-200);
+  border-radius: 4px;
   background: transparent;
   color: var(--gray-600);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease-out;
 }
 
 nav button:hover {
@@ -144,16 +163,17 @@ nav button.active {
   min-width: 240px;
   max-width: 320px;
   padding: 24px 28px;
-  border: 1px solid var(--black);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
   background: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease-out;
   text-align: center;
 }
 
 .mode-btn:hover {
   background: var(--accent);
-  color: var(--white);
+  color: #fff;
   border-color: var(--accent);
 }
 
@@ -190,7 +210,8 @@ nav button.active {
 /* Process Session: filled by default */
 .mode-btn--process {
   background: var(--black);
-  color: var(--white);
+  color: #fff;
+  border-color: var(--black);
 }
 .mode-btn--process .mode-desc,
 .mode-btn--process .time-badge { color: var(--gray-200); }
@@ -255,6 +276,7 @@ nav button.active {
   text-transform: uppercase;
   padding: 6px 16px;
   border: 1px solid var(--gray-200);
+  border-radius: 20px;
   text-align: center;
 }
 
@@ -299,7 +321,7 @@ nav button.active {
 .card-hint {
   text-align: center;
   font-size: 14px;
-  color: var(--gray-400);
+  color: var(--accent);
   font-style: italic;
   margin-bottom: 24px;
 }
@@ -328,6 +350,7 @@ nav button.active {
   min-height: 160px;
   padding: 20px;
   border: 1px solid var(--gray-200);
+  border-radius: 4px;
   background: var(--white);
   font-family: var(--sans);
   font-size: 16px;
@@ -335,7 +358,7 @@ nav button.active {
   color: var(--black);
   resize: vertical;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.25s ease-out;
 }
 
 .response-area textarea:focus {
@@ -362,11 +385,13 @@ nav button.active {
   text-transform: uppercase;
   padding: 14px 32px;
   min-height: 44px;
-  border: 1px solid var(--black);
+  border: 1px solid var(--gray-400);
+  border-radius: 4px;
   background: transparent;
   color: var(--black);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease-out;
+  text-decoration: none;
 }
 
 .btn:hover {
@@ -415,7 +440,7 @@ nav button.active {
   line-height: 1.6;
   color: var(--gray-600);
   padding: 20px;
-  border-left: 3px solid var(--black);
+  border-left: 3px solid var(--accent);
   text-align: left;
   margin-bottom: 24px;
   background: var(--white);
@@ -541,7 +566,7 @@ nav button.active {
   text-align: center;
   margin-bottom: 48px;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 2px solid var(--accent);
 }
 
 .synthesis-header h2 {
@@ -585,7 +610,7 @@ nav button.active {
 
 .themes-words .dot-sep {
   margin: 0 12px;
-  color: var(--gray-200);
+  color: var(--accent);
   font-style: normal;
 }
 
@@ -996,8 +1021,9 @@ nav button.active {
   .response-area textarea { min-height: 120px; }
   .through-line { font-size: 16px; }
   .btn { padding: 14px 24px; }
-  .site-footer .footer-inner { flex-direction: column; gap: 2px; }
-  .site-footer .dot { display: none; }
+  .footer-meta-inner { flex-direction: column; gap: 2px; }
+  .footer-meta .dot { display: none; }
+  .footer-brand { padding: 32px 20px; }
   .quadrant-container { max-width: 300px; }
   .themes-words { font-size: 16px; }
   .themes-words .dot-sep { margin: 0 8px; }
@@ -1055,16 +1081,51 @@ a:focus-visible {
 
 /* ── Footer ── */
 .site-footer {
-  border-top: 1px solid var(--gray-100);
   margin-top: 80px;
-  padding: 28px 24px 40px;
+}
+
+.footer-brand {
+  background: var(--black);
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.footer-brand .collective-logo {
+  max-width: 180px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.footer-brand p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--gray-400);
+  margin-bottom: 20px;
+}
+
+.footer-brand .btn {
+  border-color: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+}
+
+.footer-brand .btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.footer-meta {
+  padding: 20px 24px;
   text-align: center;
   font-size: 13px;
   color: var(--gray-400);
   line-height: 1.7;
+  border-top: 1px solid var(--gray-100);
 }
 
-.site-footer .footer-inner {
+.footer-meta-inner {
   max-width: 800px;
   margin: 0 auto;
   display: flex;
@@ -1074,16 +1135,15 @@ a:focus-visible {
   align-items: baseline;
 }
 
-.site-footer a {
-  color: var(--black);
+.footer-meta a {
+  color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px solid var(--gray-200);
-  transition: border-color 0.2s ease;
+  transition: color 0.25s ease-out;
 }
 
-.site-footer a:hover {
-  border-bottom-color: var(--black);
+.footer-meta a:hover {
+  color: var(--accent-dark);
 }
 
-.site-footer .dot { opacity: 0.5; }
-.site-footer .priv { color: var(--gray-400); }
+.footer-meta .dot { opacity: 0.5; }
+.footer-meta .priv { color: var(--gray-400); }
