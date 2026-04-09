@@ -1097,28 +1097,29 @@ a:focus-visible {
 }
 
 .footer-brand {
-  background: var(--black);
+  background: var(--cream);
   padding: 40px 24px;
   text-align: center;
+  border-top: 1px solid var(--gray-100);
 }
 
 .footer-brand .collective-logo {
   max-width: 260px;
   height: auto;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .footer-brand p {
   font-family: var(--serif);
   font-style: italic;
   font-size: 16px;
-  color: var(--gray-400);
+  color: var(--accent);
   margin-bottom: 20px;
 }
 
 .footer-brand .btn {
-  border-color: var(--accent);
-  color: #fff;
+  border-color: var(--black);
+  color: var(--black);
   border-radius: 4px;
 }
 
