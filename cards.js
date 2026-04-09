@@ -87,7 +87,6 @@ const CATEGORIES = {
       { prompt: '\u201cThis job is holding me back because...\u201d now rewrite it as \u201cI am holding myself back because...\u201d What changes?', front: "assets/OOA_CG_Wildcard_2_front.png", back: "assets/OOA_CG_Wildcard_2_back.png" },
       { prompt: "Rewrite your current job description into one you\u2019d actually be excited about.", front: "assets/OOA_CG_Wildcard_3_front.png", back: "assets/OOA_CG_Wildcard_3_back.png" },
       { prompt: 'Define your \u201cDesign Constraints\u201d for life: 3 rules that keep you aligned.', front: "assets/OOA_CG_Wildcard_4_front.png", back: "assets/OOA_CG_Wildcard_4_back.png" },
-      { prompt: "Pull any other card\u2014answer it as your future self.", front: "assets/OOA_CG_Wildcard_6_front.png", back: "assets/OOA_CG_Wildcard_6_back.png" },
       { prompt: "Name a dream completely unrelated to your training. Why does it matter?", front: "assets/OOA_CG_Wildcard_8_front.png", back: "assets/OOA_CG_Wildcard_8_back.png" },
       { prompt: "Write the resignation letter you\u2019ll never send. What truth is hiding in it?", front: "assets/OOA_CG_Wildcard_9_front.png", back: "assets/OOA_CG_Wildcard_9_back.png" },
       { prompt: "What is the working title for your next chapter?", front: "assets/OOA_CG_Wildcard_10_front.png", back: "assets/OOA_CG_Wildcard_10_back.png" },

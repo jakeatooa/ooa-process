@@ -4,6 +4,7 @@
   --black: #0a0a0a;
   --white: #f5f2ed;
   --cream: #faf8f4;
+  --accent: #4ab479;
   --gray-100: #e8e5e0;
   --gray-200: #d1cdc6;
   --gray-400: #8a857d;
@@ -65,7 +66,7 @@ nav button {
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 14px 20px;
   min-height: 44px;
@@ -77,9 +78,9 @@ nav button {
 }
 
 nav button:hover {
-  background: var(--black);
+  background: var(--accent);
   color: var(--white);
-  border-color: var(--black);
+  border-color: var(--accent);
 }
 
 nav button.active {
@@ -118,14 +119,14 @@ nav button.active {
 .deck-hero {
   margin: 0 auto 32px;
   text-align: center;
-  background: #dfdcd7;
+  background: #c8c4be;
   margin-left: -24px;
   margin-right: -24px;
   padding: 0;
 }
 
 .deck-hero-img {
-  max-width: 520px;
+  max-width: 640px;
   width: 100%;
   height: auto;
   display: block;
@@ -154,18 +155,20 @@ nav button.active {
 }
 
 .mode-btn:hover {
-  background: var(--black);
+  background: var(--accent);
   color: var(--white);
+  border-color: var(--accent);
 }
 
 .mode-btn:hover .mode-desc,
-.mode-btn:hover .time-badge { color: var(--gray-200); }
+.mode-btn:hover .time-badge { color: rgba(255,255,255,0.8); }
 
 .mode-btn h3 {
   font-family: var(--serif);
   font-size: 26px;
   font-weight: 600;
   margin-bottom: 4px;
+  letter-spacing: 0.02em;
 }
 
 .time-badge {
@@ -195,11 +198,12 @@ nav button.active {
 .mode-btn--process .mode-desc,
 .mode-btn--process .time-badge { color: var(--gray-200); }
 .mode-btn--process:hover {
-  background: transparent;
-  color: var(--black);
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
 }
 .mode-btn--process:hover .mode-desc,
-.mode-btn--process:hover .time-badge { color: var(--gray-400); }
+.mode-btn--process:hover .time-badge { color: rgba(255,255,255,0.8); }
 
 /* Quick Pull: outlined */
 .mode-btn--quick {
@@ -240,8 +244,8 @@ nav button.active {
   transition: all 0.3s ease;
 }
 
-.progress-dot.filled { background: var(--black); border-color: var(--black); }
-.progress-dot.current { border-color: var(--black); border-width: 2px; }
+.progress-dot.filled { background: var(--accent); border-color: var(--accent); }
+.progress-dot.current { border-color: var(--accent); border-width: 2px; }
 
 /* ── Category Pill ── */
 .category-pill {
@@ -369,8 +373,9 @@ nav button.active {
 }
 
 .btn:hover {
-  background: var(--black);
+  background: var(--accent);
   color: var(--white);
+  border-color: var(--accent);
 }
 
 .btn.primary {
@@ -379,8 +384,9 @@ nav button.active {
 }
 
 .btn.primary:hover {
-  background: transparent;
-  color: var(--black);
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
 }
 
 .btn:disabled {
@@ -747,13 +753,14 @@ nav button.active {
 }
 
 .collective-btn {
-  border-color: var(--white);
+  border-color: var(--accent);
   color: var(--white);
 }
 
 .collective-btn:hover {
-  background: var(--white);
-  color: var(--black);
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
 }
 
 .share-actions {

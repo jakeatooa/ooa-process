@@ -146,7 +146,7 @@ function renderQuadrantWidget(area) {
     </div>
     <div class="card-actions">
       <button class="btn" id="btn-skip">Skip</button>
-      <button class="btn primary" id="btn-submit">Submit</button>
+      <button class="btn primary" id="btn-submit">Next</button>
     </div>
   `;
 
@@ -197,7 +197,7 @@ function renderRankWidget(area) {
     </ul>
     <div class="card-actions">
       <button class="btn" id="btn-skip">Skip</button>
-      <button class="btn primary" id="btn-submit">Submit</button>
+      <button class="btn primary" id="btn-submit">Next</button>
     </div>
   `;
 
@@ -329,7 +329,7 @@ function restoreResponseArea() {
     <textarea id="response-textarea" placeholder="Start writing... (Ctrl+Enter to submit)"></textarea>
     <div class="card-actions">
       <button class="btn" id="btn-skip">Skip</button>
-      <button class="btn primary" id="btn-submit">Submit</button>
+      <button class="btn primary" id="btn-submit">Next</button>
     </div>
   `;
 }
@@ -589,8 +589,8 @@ function downloadAsImage() {
       const ctx = canvas.getContext("2d");
       const W = 800;
       const padding = 60;
-      const headerH = 80;
-      const thumbH = images.some(i => i) ? 140 : 0;
+      const headerH = 90;
+      const thumbH = images.some(i => i) ? 170 : 0;
 
       // Build text lines
       let lines = [];
@@ -628,20 +628,20 @@ function downloadAsImage() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, W, headerH);
       ctx.fillStyle = "#f5f2ed";
-      ctx.font = "italic 400 32px 'Georgia', serif";
-      ctx.fillText("Process.", padding, 52);
+      ctx.font = "italic 400 34px 'Georgia', serif";
+      ctx.fillText("Process.", padding, 58);
       // OOA branding on right side of header
       ctx.font = "italic 400 14px 'Georgia', serif";
       ctx.fillStyle = "#8a857d";
-      ctx.fillText("Out of Architecture", W - padding - ctx.measureText("Out of Architecture").width, 52);
+      ctx.fillText("Out of Architecture", W - padding - ctx.measureText("Out of Architecture").width, 58);
 
       // Card thumbnails (2x size)
       if (thumbH > 0) {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, headerH, W, thumbH);
-        const thumbW = 70;
-        const thumbHt = 98;
-        const gap = 20;
+        const thumbW = 90;
+        const thumbHt = 126;
+        const gap = 16;
         const validImages = images.filter(i => i);
         const totalThumbW = validImages.length * thumbW + (validImages.length - 1) * gap;
         let thumbX = (W - totalThumbW) / 2;
@@ -657,7 +657,7 @@ function downloadAsImage() {
             ctx.restore();
             // Category name below
             ctx.fillStyle = "#8a857d";
-            ctx.font = "500 10px Inter, sans-serif";
+            ctx.font = "500 11px Inter, sans-serif";
             const catName = state.drawnCards[i]?.categoryName || "";
             const tw = ctx.measureText(catName).width;
             ctx.fillText(catName, thumbX + (thumbW - tw) / 2, thumbY + thumbHt + 14);
