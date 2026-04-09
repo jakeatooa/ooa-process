@@ -119,14 +119,11 @@ nav button.active {
 .deck-hero {
   margin: 0 auto 32px;
   text-align: center;
-  background: #c8c4be;
-  margin-left: -24px;
-  margin-right: -24px;
   padding: 0;
 }
 
 .deck-hero-img {
-  max-width: 640px;
+  max-width: 520px;
   width: 100%;
   height: auto;
   display: block;
@@ -992,7 +989,7 @@ nav button.active {
   .key-quote-section blockquote { font-size: 18px; }
   .quick-result-quote { padding: 24px; }
   .quick-result-quote blockquote { font-size: 18px; }
-  .deck-hero { margin-left: -20px; margin-right: -20px; }
+  .deck-hero-img { max-width: 400px; }
   .collective-cta { padding: 28px 20px; }
   .collective-cta p { font-size: 16px; }
   .response-area { max-width: 100%; }
@@ -1017,7 +1014,7 @@ nav button.active {
   header .logo { font-size: 24px; }
   #home-screen, #action-screen, #quick-result-screen,
   #synthesis-screen, #history-screen { padding: 32px 16px; }
-  .deck-hero { margin-left: -16px; margin-right: -16px; }
+  .deck-hero-img { max-width: 320px; }
 }
 
 /* ── Animations ── */
