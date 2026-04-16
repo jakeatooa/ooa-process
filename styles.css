@@ -1,17 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+@font-face {
+  font-family: 'DIN Pro';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('assets/fonts/DINPro-Light.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DIN Pro';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('assets/fonts/DINPro-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DIN Pro';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('assets/fonts/DINPro-Medium.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DIN Pro';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('assets/fonts/DINPro-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'DIN Pro';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url('assets/fonts/DINPro-Black.otf') format('opentype');
+}
 
 :root {
   --black: #0a0a0a;
-  --white: #faf8f4;
-  --cream: #fefdf6;
+  --white: #ffffff;
+  --cream: #ffffff;
   --accent: #b79968;
   --accent-dark: #9c8258;
+  --text-primary: #1a1a1a;
   --gray-100: #e8e5e0;
   --gray-200: #d1cdc6;
   --gray-400: #8a857d;
   --gray-600: #5c5750;
   --serif: 'Cormorant Garamond', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
+  --sans: 'DIN Pro', -apple-system, BlinkMacSystemFont, sans-serif;
   --card-width: 320px;
   --card-height: 448px;
 }
@@ -21,44 +58,51 @@
 body {
   font-family: var(--sans);
   background: var(--cream);
-  color: var(--black);
+  color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ── Header ── */
 header {
-  text-align: center;
-  padding: 48px 24px 32px;
+  padding: 24px 32px 32px;
   background: var(--black);
   color: #fff;
 }
 
-header .logo {
-  font-family: var(--serif);
-  font-size: 36px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  margin-bottom: 4px;
-  color: #fff;
+.header-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
 }
 
-header .logo span {
-  font-weight: 300;
-  opacity: 0.4;
-}
-
-header .tagline {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 17px;
-  color: var(--gray-400);
-  margin-top: 6px;
-}
-
-header .collective-link {
+.header-ooa-link {
+  justify-self: start;
   display: inline-block;
-  margin-top: 14px;
+  line-height: 0;
+}
+
+.header-ooa-logo {
+  max-height: 40px;
+  width: auto;
+  display: block;
+}
+
+.header-logo-wrap {
+  justify-self: center;
+}
+
+.header-logo-img {
+  max-height: 48px;
+  width: auto;
+  display: block;
+}
+
+.header-cta {
+  justify-self: end;
+  display: inline-block;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
@@ -66,21 +110,25 @@ header .collective-link {
   text-transform: uppercase;
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.25s ease-out;
+  padding: 12px 20px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  transition: all 0.25s ease-out;
+  white-space: nowrap;
 }
 
-header .collective-link:hover {
-  color: #fff;
+.header-cta:hover {
+  background: var(--accent);
+  color: #000;
 }
 
-header .collective-link-sub {
-  display: block;
-  margin-top: 4px;
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: none;
-  color: var(--gray-400);
+header .tagline {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  color: #e8e5e0;
+  margin-top: 0;
 }
 
 /* ── Navigation ── */
@@ -101,7 +149,6 @@ nav button {
   padding: 14px 20px;
   min-height: 44px;
   border: 1px solid var(--gray-200);
-  border-radius: 4px;
   background: transparent;
   color: var(--gray-600);
   cursor: pointer;
@@ -134,16 +181,26 @@ nav button.active {
 
 #home-screen .philosophy {
   font-family: var(--serif);
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.5;
-  color: var(--gray-400);
+  color: var(--gray-600);
   margin-top: 40px;
   margin-bottom: 0;
 }
 
-#home-screen .philosophy strong {
-  color: var(--gray-600);
+#home-screen .philosophy p {
+  margin: 0;
+}
+
+#home-screen .philosophy-primary {
+  display: block;
   font-weight: 600;
+  color: var(--text-primary);
+  margin: 24px 0 !important;
+}
+
+#home-screen .philosophy-line {
+  line-height: 1.5;
 }
 
 /* ── Deck Hero Image ── */
@@ -176,7 +233,6 @@ nav button.active {
   max-width: 320px;
   padding: 24px 28px;
   border: 1px solid var(--gray-200);
-  border-radius: 4px;
   background: transparent;
   cursor: pointer;
   transition: all 0.25s ease-out;
@@ -288,7 +344,6 @@ nav button.active {
   text-transform: uppercase;
   padding: 6px 16px;
   border: 1px solid var(--gray-200);
-  border-radius: 20px;
   text-align: center;
 }
 
@@ -362,12 +417,11 @@ nav button.active {
   min-height: 160px;
   padding: 20px;
   border: 1px solid var(--gray-200);
-  border-radius: 4px;
-  background: var(--white);
+  background: #fafafa;
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.7;
-  color: var(--black);
+  color: var(--text-primary);
   resize: vertical;
   outline: none;
   transition: border-color 0.25s ease-out;
@@ -398,9 +452,8 @@ nav button.active {
   padding: 14px 32px;
   min-height: 44px;
   border: 1px solid var(--gray-400);
-  border-radius: 4px;
   background: transparent;
-  color: var(--black);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.25s ease-out;
   text-decoration: none;
@@ -1021,7 +1074,18 @@ nav button.active {
   #home-screen { padding: 36px 20px 48px; }
   .mode-buttons { flex-direction: column; align-items: stretch; max-width: 340px; margin: 0 auto; }
   .mode-btn, .mode-btn--quick, .mode-btn--process { max-width: none; min-width: 0; text-align: center; }
-  header .logo { font-size: 28px; }
+  header { padding: 20px 20px 24px; }
+  .header-top {
+    grid-template-columns: auto auto;
+    grid-template-areas: "ooa cta" "logo logo";
+    gap: 20px;
+  }
+  .header-ooa-link { grid-area: ooa; }
+  .header-cta { grid-area: cta; padding: 10px 14px; font-size: 11px; }
+  .header-logo-wrap { grid-area: logo; justify-self: center; margin-top: 12px; }
+  .header-logo-img { max-height: 40px; }
+  .header-ooa-logo { max-height: 32px; }
+  header .tagline { font-size: 16px; }
   .key-quote-section { padding: 24px; }
   .key-quote-section blockquote { font-size: 18px; }
   .quick-result-quote { padding: 24px; }
@@ -1048,8 +1112,9 @@ nav button.active {
     --card-height: 336px;
   }
 
-  header { padding: 32px 16px 24px; }
-  header .logo { font-size: 24px; }
+  header { padding: 16px 16px 20px; }
+  .header-logo-img { max-height: 34px; }
+  .header-ooa-logo { max-height: 28px; }
   #home-screen, #action-screen, #quick-result-screen,
   #synthesis-screen, #history-screen { padding: 32px 16px; }
   .deck-hero-img { max-width: 480px; }
@@ -1102,30 +1167,44 @@ a:focus-visible {
   text-align: center;
 }
 
+.footer-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
 .footer-brand .collective-logo {
   max-width: 260px;
   height: auto;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .footer-brand p {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 16px;
+  font-size: 18px;
   color: var(--accent);
-  margin-bottom: 45px;
+  margin: 0 auto;
+  max-width: 600px;
+  line-height: 1.5;
 }
 
 .footer-brand .btn {
   border-color: var(--accent);
   color: #fff;
-  border-radius: 4px;
 }
 
 .footer-brand .btn:hover {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .footer-brand-row { flex-direction: column; gap: 24px; }
 }
 
 .footer-meta {
