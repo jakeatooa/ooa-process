@@ -95,7 +95,7 @@ header {
 }
 
 .header-logo-img {
-  max-height: 216px;
+  max-height: 72px;
   width: auto;
   display: block;
 }
@@ -1083,7 +1083,7 @@ nav button.active {
   .header-ooa-link { grid-area: ooa; }
   .header-cta { grid-area: cta; padding: 10px 14px; font-size: 11px; }
   .header-logo-wrap { grid-area: logo; justify-self: center; margin-top: 12px; }
-  .header-logo-img { max-height: 150px; }
+  .header-logo-img { max-height: 56px; }
   .header-ooa-logo { max-height: 64px; }
   header .tagline { font-size: 16px; }
   .key-quote-section { padding: 24px; }
@@ -1113,7 +1113,7 @@ nav button.active {
   }
 
   header { padding: 16px 16px 20px; }
-  .header-logo-img { max-height: 120px; }
+  .header-logo-img { max-height: 44px; }
   .header-ooa-logo { max-height: 56px; }
   #home-screen, #action-screen, #quick-result-screen,
   #synthesis-screen, #history-screen { padding: 32px 16px; }
